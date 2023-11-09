@@ -18,13 +18,26 @@ def predict_iris():
     with open("asset.json","r") as f:
         jfile = json.load(f)
     ta = np.zeros(len(jfile["columns"]))
+
+    # SepalLengthCm = int(data["SepalLengthCm"])
+    # SepalWidthCm = int(data["SepalWidthCm"])
+    # PetalLengthCm = int(data["PetalLengthCm"])
+    # PetalWidthCm = int(data["PetalWidthCm"])
+
     ta[0] = int(data["SepalLengthCm"])
     ta[1] = int(data["SepalWidthCm"])
     ta[2] = int(data["PetalLengthCm"])
     ta[3] = int(data["PetalWidthCm"])
-    # return jsonify({"Result":[test_array]})
-    species = pfile.predict([ta])
 
-    return jsonify({"message":{species}})
+    # species = pfile.predict([[SepalLengthCm,SepalWidthCm,PetalLengthCm,PetalWidthCm]])
+    species = pfile.predict([ta])
+    if species[0] == 2:
+        i_flower = "Iris_virginica"
+    if species[0] == 0:
+        i_flower = "Iris_setosa"
+    if species[0] == 1:
+        i_flower = "Iris_versicolor"
+
+    return render_template("view.html",ispecies=i_flower)
 
 app.run(debug=True)
